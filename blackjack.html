@@ -1,0 +1,76 @@
+<meta charset = "utf-8">
+<script>
+function  randomchislo(min, max) {
+	return Math.floor(Math.random()*(max-min+1))+min;
+}
+function getcards() {
+var cards = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+var i=randomchislo(0, cards.length-1);
+	return cards[i];
+}
+function sumkov(arr) {
+	var sum=0;
+	var k=0;
+	for (i=0; i<arr.length; i++){
+		
+		if (arr[i]=='J' || arr[i]=='Q' || arr[i]=='K' ) {
+			k=10;
+		} else if (arr[i]=='6' ||arr[i]=='7' ||arr[i]=='8' ||arr[i]=='9' ||arr[i]=='10') {
+			k=parseInt(arr[i]);
+		} else if (arr[i]=='A' && sum<=10) { 
+			k=11;
+		} else if (arr[i]=='A' && sum>10) {
+			k=1;
+		};
+		sum=sum+k;
+		}
+	return sum
+}
+var dealer = [getcards()];
+var player = [getcards(), getcards()];
+var ss=0;
+var sd=0;
+var answer='';
+
+do {
+	ss=sumkov(player);
+	sd=sumkov(dealer);
+	alert('Дилер: ' + dealer.join(' ') +' - '+sd+' очков \n \r' +' Игрок: ' + player.join(' ') +' - '+ss+' очков');
+	
+	
+		if (ss==21) {
+			alert('ты победил, Black Jack '+ss); break;
+		} else if (sd==21) {
+			alert('Дилер победил, Black Jack '+sd); break;
+		} else if (ss>21) {
+			alert('у тебя перебор '+ss); break;
+		} else if (sd>21) {
+			alert('у дилера перебор '+sd); break;
+		} else if (sd<17 && ss<21){
+			answer=prompt('еще карту? - 1');
+			if (answer==1 && sd<17) { 
+				player.push(getcards()); dealer.push(getcards()) 
+			} else if (answer!=1 && sd<17) { 
+				dealer.push(getcards())
+			} else if (answer==1 && sd>=17) { 
+				player.push(getcards())
+			}
+		} else if (sd>=17 && sd<21) {
+			if (ss==sd) {alert('НИЧЬЯ - у дилера '+sd+' очков' + 'у тебя '+ss+' очков'); break;}
+			else if (ss>sd) {alert('у дилера '+sd+' очков' + '\nу тебя '+ss+' очков'+'\nты победил \n'+ss);break;} 
+			else if (ss<sd) {alert('у дилера '+sd+' очков' + '\nу тебя '+ss+' очков'+'\nдилер победил '+sd);break;}
+		}
+		
+		
+		
+} while (answer == '1' && sd<17) ;
+
+
+	 if (answer!=1 && sd>17) { 
+				dealer.push(getcards())
+				if (ss==sd) {alert('НИЧЬЯ - у дилера '+sd+' очков' + 'у тебя '+ss+' очков');}
+				else if (ss>sd) {alert('у дилера '+sd+' очков' + 'у тебя '+ss+' очков'+'\nты победил \n'+ss);} 
+				else if (ss<sd) {alert('у дилера '+sd+' очков' + 'у тебя '+ss+' очков'+'\nдилер победил '+sd);}
+	 }
+
+</script>
